@@ -39,7 +39,7 @@ module.exports = function CardSetup(mod) {
 
             if (setup == null) { // zone is not configured
 
-                setup = setup.get(serverId, playerId, 'default'); // try default
+                setup = setups.get(serverId, playerId, 'default'); // try default
 
                 if (setup == null) { // if default is not configured: dont change setup
                     if (!config.get().silent || manual)
