@@ -32,8 +32,8 @@ module.exports = function CardSetup(mod) {
     });
 
     function changeSetup(zone, manual = false) {
-        const { serverId, playerId } = mod.game.me;
-        zones.ensureDungeonNameCached(zone).then(() => {
+        const { serverId, playerId, name } = mod.game.me;
+        zones.ensureDungeonNameCached(zone).then(async () => {
             let zoneName = zones.name(zone);
             let setup = setups.get(serverId, playerId, zone);
 
@@ -50,13 +50,13 @@ module.exports = function CardSetup(mod) {
                 zoneName = 'default';
             }
 
-            let changed = changeEmulator.useSetup(setup, setups.current);
+            let changed = await changeEmulator.useSetup(setup, setups.current);
 
             if (!config.get().silent || manual) {
                 if (!changed) clrmsg([`Correct setup detected`, `[${zoneName}]`], [CLR.GREEN, CLR.PURPLE]);
-                else clrmsg(['Succesfully changed setup', `[${zoneName}]`], [CLR.GREEN, CLR.PURPLE]);
+                else clrmsg(['Successfully changed setup', `[${zoneName}]`], [CLR.GREEN, CLR.PURPLE]);
             }
-        })
+        }).catch(console.error);
     }
 
     // commands
@@ -93,13 +93,13 @@ module.exports = function CardSetup(mod) {
         let id = parseName(n)
         if (id === null) return;
         if (setups.copy(serverId, id, playerId))
-            clrmsg(['Succesfully migrated setups from', n, 'to', name], [CLR.BLUE, CLR.TEAL, CLR.BLUE, CLR.TEAL]);
+            clrmsg(['Successfully migrated setups from', n, 'to', name], [CLR.BLUE, CLR.TEAL, CLR.BLUE, CLR.TEAL]);
         else clrmsg(['No setups found for', n], [CLR.RED, CLR.TEAL]);
     }
 
     function empty() {
         let { playerId, serverId, name } = mod.game.me;
-        if (setups.empty(serverId, playerId)) clrmsg(['Succesfully removed all setups for', name], [CLR.BLUE, CLR.TEAL]);
+        if (setups.empty(serverId, playerId)) clrmsg(['Successfully removed all setups for', name], [CLR.BLUE, CLR.TEAL]);
         else clrmsg(['No setups found for', name], [CLR.RED, CLR.TEAL]);
     }
 

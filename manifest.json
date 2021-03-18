@@ -1,6 +1,6 @@
 {
   "files": {
-    "index.js": "f9f1f41e83b5d9e6499b9cb5b7c9405f9b35dbc2311f69e52df24996721fe13b",
+    "index.js": "3b39c77e39e24ff71fbd9e07a4b5823100c5fdb3e50efa87374f21d64ef241e4",
     "install.bat": "e3903babf82f2335c8662828b62023fc578c2fdebbcb024d3978074fd4dbe95a",
     "module.json": "99132eb4ebbebae036bb1a5e6cf84df60336b5fa2b10c88793dc55a05e305dab",
     "README.md": "809701cc8d4a46b93888eb2b6857015bdf4755b44a23163cef12fcc4d3f55e8a",
@@ -16,7 +16,7 @@
     "install/S_REMOVE_CARD_COLLECTION_EFFECT.1.def": "7cdaa3e7244ec7091712c0547a5d75b07726513600e0b64db34b6b5582769260",
     "install/S_REMOVE_CARD_FROM_PRESET.1.def": "653fa7a821e342967d82108dab316dce7b98f5c2fa104f396ee0f0caa3df1ef6",
     "lib/CardPresets.js": "c5b47dbe444df1c15ac8f8905a5011ff925d6651bdbb95b39e4cc0e4f6c1e6a2",
-    "lib/ChangeEmulator.js": "e8ec87f4ffc43c3e007fee50d5c26343d727a108afa8e802e5a00ad90c91b58f",
+    "lib/ChangeEmulator.js": "7aad2fcc33fd8705af316786311089278cde70ce7bc24a15cad76071cef13c07",
     "lib/Chars.js": "ec059f5ea6a3ecadbd6e1f8705f88d63896612f81e3e1184eb7e3b0265c6b11e",
     "lib/Config.js": "9acf1307c36ef4ec1cb9fe70e09913f67361c39be54e2f687e352b70d115cc83",
     "lib/enums.js": "caa8f7a492974a35aa45a868a1647745e4c110bac23a1fb882430c433623dee7",
