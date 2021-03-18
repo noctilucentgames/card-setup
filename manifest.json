@@ -1,0 +1,27 @@
+{
+  "files": {
+    "index.js": "29ef4211dd9fc856eaa97adcb55283a4b6ad9ec7d1b9fced6acfbeb4bbd95cf2",
+    "install.bat": "e3903babf82f2335c8662828b62023fc578c2fdebbcb024d3978074fd4dbe95a",
+    "module.json": "99132eb4ebbebae036bb1a5e6cf84df60336b5fa2b10c88793dc55a05e305dab",
+    "README.md": "0542830e210b660ada3b6cc3968068a79401d029180d4b4c86a74e47b4b0fd2c",
+    "data/DungeonLib.json": "d7bbf0a3a6e550c8c858d10624a201497f27372a672f3601dc1df9ad8c0514a6",
+    "install/C_ADD_CARD_COLLECTION_EFFECT.1.def": "7cdaa3e7244ec7091712c0547a5d75b07726513600e0b64db34b6b5582769260",
+    "install/C_CARD_PRESET.1.def": "9f6bae95fd08b14e61f5fccbd3ab9fe001f093376f00cbf7550d43c3f66c2465",
+    "install/C_REMOVE_CARD_COLLECTION_EFFECT.1.def": "7cdaa3e7244ec7091712c0547a5d75b07726513600e0b64db34b6b5582769260",
+    "install/S_ADD_CARD_COLLECTION_EFFECT.1.def": "7cdaa3e7244ec7091712c0547a5d75b07726513600e0b64db34b6b5582769260",
+    "install/S_ADD_CARD_TO_PRESET.1.def": "653fa7a821e342967d82108dab316dce7b98f5c2fa104f396ee0f0caa3df1ef6",
+    "install/S_CARD_COLLECTION_EFFECTS.1.def": "a4009f3926efe1598466a08ba001b2ab3f6464ff70c863a33660283314699871",
+    "install/S_CARD_DATA.1.def": "1ba20ab5a830bd6f99754a93ea25f01bdd064993c60bcfbee1330c48817771d4",
+    "install/S_CARD_PRESET.1.def": "9f6bae95fd08b14e61f5fccbd3ab9fe001f093376f00cbf7550d43c3f66c2465",
+    "install/S_REMOVE_CARD_COLLECTION_EFFECT.1.def": "7cdaa3e7244ec7091712c0547a5d75b07726513600e0b64db34b6b5582769260",
+    "install/S_REMOVE_CARD_FROM_PRESET.1.def": "653fa7a821e342967d82108dab316dce7b98f5c2fa104f396ee0f0caa3df1ef6",
+    "lib/CardPresets.js": "c5b47dbe444df1c15ac8f8905a5011ff925d6651bdbb95b39e4cc0e4f6c1e6a2",
+    "lib/ChangeEmulator.js": "e8ec87f4ffc43c3e007fee50d5c26343d727a108afa8e802e5a00ad90c91b58f",
+    "lib/Chars.js": "ec059f5ea6a3ecadbd6e1f8705f88d63896612f81e3e1184eb7e3b0265c6b11e",
+    "lib/Config.js": "9acf1307c36ef4ec1cb9fe70e09913f67361c39be54e2f687e352b70d115cc83",
+    "lib/enums.js": "caa8f7a492974a35aa45a868a1647745e4c110bac23a1fb882430c433623dee7",
+    "lib/Setups.js": "fe7cc37574965fb1290307865bcd62ec9ae35250f6beed2ec827034dbf47a2df",
+    "lib/utils.js": "eb5cca5a0317397a8d8a507d4fd875ef286ecca111428c30fe47188ec332a42f",
+    "lib/Zones.js": "475eb04fb9ecaf06131d4e5630f6135c352183f7b50b58e6c75663202ee268c7"
+  }
+}

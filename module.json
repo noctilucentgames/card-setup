@@ -1,0 +1,11 @@
+{
+    "name": "Card Setup",
+    "author": "Nocti",
+    "description": "Automatically adjust card setup based on location",
+    "version": "0.1",
+    "options": {
+        "cliName": "CardSetup",
+        "guiName": "CardSetup"
+    },
+    "servers": ["https://raw.githubusercontent.com/noctilucentgames/card-setup/master/"]
+}

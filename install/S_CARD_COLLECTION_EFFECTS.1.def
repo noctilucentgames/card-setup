@@ -1,0 +1,5 @@
+uint64 gameId
+array effects
+- uint32 id
+- uint32 index
+string name
