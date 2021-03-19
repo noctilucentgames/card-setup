@@ -20,15 +20,23 @@ module.exports = function CardSetup(mod) {
     const chars = new Chars(mod);
     const changeEmulator = new ChangeEmulator(mod, config.get());
     const cardPresets = new CardPresets(mod);
-
+    
     mod.command.add('setup', { save, remove, migrate, empty, list, use, show, silent, debug, old, });
-
+    
     // on zone change
     mod.game.me.on('change_zone', (zone, quick) => {
         // setup will be invalid at first spawn after selecting char since setup data is sent after TOPO change
         // TODO onvalid change setup? not sure if this is desired
         if (!setups.valid()) return;
         changeSetup(zone);
+    });
+
+    // on dungeon message
+    mod.hook('S_DUNGEON_EVENT_MESSAGE', 2, event => {
+        let arr = /@dungeon:([0-9]*)/.exec(event.message);
+        if (arr === null || arr.length < 2) return; // not a dungeon message?
+        let id = arr[1];
+        if (zones.hasSh(id)) changeSetup(id);
     });
 
     function changeSetup(zone, manual = false) {
@@ -39,7 +47,7 @@ module.exports = function CardSetup(mod) {
 
             if (setup == null) { // zone is not configured
 
-                setup = setups.get(serverId, playerId, 'default'); // try default
+                if (!zones.isDMessage(zone)) setup = setups.get(serverId, playerId, 'default'); // try default
 
                 if (setup == null) { // if default is not configured: dont change setup
                     if (!config.get().silent || manual)

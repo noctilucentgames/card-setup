@@ -1,5 +1,14 @@
 # Card Setup
 
+## Update v0.2
+
+* Now supports a default setup
+`setup save default`
+
+* Now supports card changes for Maknakh and LB-1 in CR
+`setup save CR1|CRM|Maknakh`
+`setup save CR2|CRLB|LB-1`
+
 ## Overview
 
 This module automatically adjusts your card setup based on location. A card setup exists of
