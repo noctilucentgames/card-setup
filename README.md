@@ -2,12 +2,12 @@
 
 ## Update v0.2
 
+* Now supports a default setup<br>
 `setup save default`
-> Now supports a default setup
 
-`setup save CR1|CRM|Maknakh`
+* Now supports card changes for Maknakh and LB-1 in CR<br>
+`setup save CR1|CRM|Maknakh`<br>
 `setup save CR2|CRLB|LB-1`
-> Now supports card changes for Maknakh and LB-1 in CR
 
 ## Overview
 
