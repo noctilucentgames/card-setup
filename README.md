@@ -23,18 +23,18 @@ All setup is done through commands inside the game.
 __RUN install.bat to install the necessary defs/opcodes before starting TeraToolbox!__<br>
 If installation fails, you can manually add 
 1. The contents of the [install]() directory to [TeraToolbox\data\definitions]()
-2. The following opcodes to [TeraToolbox\data\opcodes\protocol.380186.map]()
+2. The following opcodes to [TeraToolbox\data\opcodes\protocol.381290.map]()
 ```
-C_REMOVE_CARD_COLLECTION_EFFECT 58294
-S_REMOVE_CARD_COLLECTION_EFFECT 48550
-C_ADD_CARD_COLLECTION_EFFECT 35029
-S_ADD_CARD_COLLECTION_EFFECT 28226
-C_CARD_PRESET 34365
-S_CARD_PRESET 29768
-S_CARD_COLLECTION_EFFECTS 44837
-S_ADD_CARD_TO_PRESET 53019
-S_REMOVE_CARD_FROM_PRESET 25441
-S_CARD_DATA 36253
+C_REMOVE_CARD_COLLECTION_EFFECT 20541
+S_REMOVE_CARD_COLLECTION_EFFECT 65443
+C_ADD_CARD_COLLECTION_EFFECT 30699
+S_ADD_CARD_COLLECTION_EFFECT 39384
+C_CARD_PRESET 36656
+S_CARD_PRESET 21610
+S_CARD_COLLECTION_EFFECTS 45492
+S_ADD_CARD_TO_PRESET 49581
+S_REMOVE_CARD_FROM_PRESET 53384
+S_CARD_DATA 22061
 ```
 
 ## Commands
