@@ -1,5 +1,9 @@
 # Card Setup
 
+## Update v0.3
+
+* Auto install feature
+
 ## Update v0.2
 
 * Now supports a default setup<br>
@@ -17,25 +21,6 @@ This module automatically adjusts your card setup based on location. A card setu
 > __A setup does not keep track of which cards are in which card preset, that's up to you. If you happen to change the cards inside a preset, keep in mind the module will only change the preset number for you.__
 
 All setup is done through commands inside the game.
-
-## Install
-
-__RUN install.bat to install the necessary defs/opcodes before starting TeraToolbox!__<br>
-If installation fails, you can manually add 
-1. The contents of the [install]() directory to [TeraToolbox\data\definitions]()
-2. The following opcodes to [TeraToolbox\data\opcodes\protocol.381290.map]()
-```
-C_REMOVE_CARD_COLLECTION_EFFECT 20541
-S_REMOVE_CARD_COLLECTION_EFFECT 65443
-C_ADD_CARD_COLLECTION_EFFECT 30699
-S_ADD_CARD_COLLECTION_EFFECT 39384
-C_CARD_PRESET 36656
-S_CARD_PRESET 21610
-S_CARD_COLLECTION_EFFECTS 45492
-S_ADD_CARD_TO_PRESET 49581
-S_REMOVE_CARD_FROM_PRESET 53384
-S_CARD_DATA 22061
-```
 
 ## Commands
 

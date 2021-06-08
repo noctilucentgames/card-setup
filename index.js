@@ -10,8 +10,21 @@ const Setups = require('./lib/Setups');
 const Zones = require('./lib/Zones');
 const Chars = require('./lib/Chars');
 const ChangeEmulator = require('./lib/ChangeEmulator');
+const opcodes = require('./data/opcodes');
+
+// S_CARD_COLLECTION_EFFECTS l-3e00
+// S_CARD_DATA l-4e1a
 
 module.exports = function CardSetup(mod) {
+
+    // auto install
+    mod.dispatch.protocol.loadCustomDefinitions(path.resolve(__dirname, 'data', 'defs'));
+    if (opcodes[mod.dispatch.protocolVersion]) {
+        for (const [name, code] of Object.entries(opcodes[mod.dispatch.protocolVersion])) {
+            mod.dispatch.addOpcode(name, code);
+        }
+    }
+
     mod.game.initialize("me");
 
     const config = new Config(mod);
