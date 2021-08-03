@@ -18,5 +18,11 @@
     "30300002": ["CR2", "CRLB", "LB-1"],
     "9070": ["MM"],
     "3034": ["RKE", "RKHM", "RKH", "RK", "RK9", "RRK9", "RK9H", "RK9HM", "RK9R"],
-    "3041": ["DC"]
+    "3041": ["DC", "DCNM", "DCN"],
+    "3044": ["TFSC", "DCH", "DCHM"],
+    "3105": ["FL", "FLN", "FLNM"],
+    "3205": ["FLH", "FLHM", "CFL"],
+    "9982": ["GLSH", "GLSHM", "GLS", "Grotto", "GrottoH", "GrottoHM"],
+    "9780": ["VH"],
+    "9811": ["AB", "ABN", "ABNM"]
 }
