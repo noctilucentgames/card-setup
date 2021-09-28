@@ -24,5 +24,6 @@
     "3205": ["FLH", "FLHM", "CFL"],
     "9982": ["GLSH", "GLSHM", "GLS", "Grotto", "GrottoH", "GrottoHM"],
     "9780": ["VH"],
-    "9811": ["AB", "ABN", "ABNM"]
+    "9811": ["AB", "ABN", "ABNM"],
+    "3107": ["DTG", "FIH", "FI"]
 }
