@@ -26,5 +26,13 @@
     "9780": ["VH"],
     "9811": ["AB", "ABN", "ABNM"],
     "3107": ["DTG", "FIH", "FI"],
-    "3036": ["SC", "SCHM", "SCH", "SCEM"]
+    "3036": ["SC", "SCHM", "SCH", "SCEM"],
+    "9809" : ["MC"],
+    "9794" : ["TR", "TRN", "TRNM"],
+    "3027" : ["FA", "Hagufna"],
+    "9068" : ["SS", "SSH", "SSHM"],
+    "3109" : ["IT", "ITN", "ITNM"],
+    "9920" : ["AA", "AAH", "AAHM"],
+    "3209" : ["CIT", "ITH", "ITHM"],
+    "3047" : ["HAQ", "HAQH", "HAQHM"]
 }
