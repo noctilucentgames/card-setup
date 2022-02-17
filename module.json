@@ -2,7 +2,7 @@
     "name": "Card Setup",
     "author": "Nocti",
     "description": "Automatically adjust card setup based on location",
-    "version": "0.3",
+    "version": "0.4",
     "options": {
         "cliName": "CardSetup",
         "guiName": "CardSetup"

@@ -9,6 +9,7 @@ const CardPresets = require('./lib/CardPresets');
 const Setups = require('./lib/Setups');
 const Zones = require('./lib/Zones');
 const Chars = require('./lib/Chars');
+const Boss = require('./lib/Boss');
 const ChangeEmulator = require('./lib/ChangeEmulator');
 const opcodes = require('./data/opcodes');
 
@@ -33,15 +34,18 @@ module.exports = function CardSetup(mod) {
     const chars = new Chars(mod);
     const changeEmulator = new ChangeEmulator(mod, config.get());
     const cardPresets = new CardPresets(mod);
+    const boss = new Boss(mod);
+    let lastBoss = null;
     
-    mod.command.add('setup', { save, remove, migrate, empty, list, use, show, silent, debug, old, });
+    mod.command.add('setup', { save, remove, migrate, empty, list, use, show, silent, debug, });
     
     // on zone change
     mod.game.me.on('change_zone', (zone, quick) => {
         // setup will be invalid at first spawn after selecting char since setup data is sent after TOPO change
         // TODO onvalid change setup? not sure if this is desired
         if (!setups.valid()) return;
-        changeSetup(zone);
+        changeSetup(Setups.TYPE.ZONE, zone);
+        lastBoss = null;
     });
 
     // on dungeon message
@@ -49,61 +53,133 @@ module.exports = function CardSetup(mod) {
         let arr = /@dungeon:([0-9]*)/.exec(event.message);
         if (arr === null || arr.length < 2) return; // not a dungeon message?
         let id = arr[1];
-        if (zones.hasSh(id)) changeSetup(id);
+        if (zones.hasSh(id)) changeSetup(Setups.TYPE.EVENT, id);
     });
 
-    function changeSetup(zone, manual = false) {
+
+    mod.hook('S_BOSS_GAGE_INFO', 3, event => {
+        let id = setups.bossKey(event.huntingZoneId, event.templateId);
+        if (lastBoss != id) {
+            changeSetup(Setups.TYPE.BOSS, id);
+        }
+    })
+
+
+    function changeSetup(type, id, manual = false) {
         const { serverId, playerId, name } = mod.game.me;
-        zones.ensureDungeonNameCached(zone).then(async () => {
-            let zoneName = zones.name(zone);
-            let setup = setups.get(serverId, playerId, zone);
 
-            if (setup == null) { // zone is not configured
+        lastBoss = type == Setups.TYPE.BOSS ? id : null;
+        Promise.resolve()
+        .then(() => {
+            if (type == Setups.TYPE.ZONE || type == Setups.TYPE.EVENT) return zones.ensureDungeonNameCached(id);
+        })
+        .then(() => {
+            if (type == Setups.TYPE.BOSS) {
+                let d = setups.bossValues(id);
+                return boss.ensureBossCached(d.huntingZone, d.boss);
+            }
+        })
+        .then(async () => {
+            let setup = setups.get(serverId, playerId, type, id);
 
-                if (!zones.isDMessage(zone)) setup = setups.get(serverId, playerId, 'default'); // try default
-
-                if (setup == null) { // if default is not configured: dont change setup
-                    if (!config.get().silent || manual)
-                        clrmsg(['No setup configured for', name, `[${zoneName}]`], [CLR.YELLOW, CLR.TEAL, CLR.PURPLE]);
-                    return;
+            if (setup == null && !manual) {
+                // try species
+                if (type == Setups.TYPE.BOSS) {
+                    let d = setups.bossValues(id);
+                    let species = boss.getBossSpecies(d.huntingZone, d.boss);
+                    if (species > -1) { // if boss has a species
+                        type = Setups.TYPE.SPECIES;
+                        id = species;
+                        setup = setups.get(serverId, playerId, type, id);
+                    }
                 }
 
-                zoneName = 'default';
+                // try default
+                if (type == Setups.TYPE.ZONE) {
+                    id = 'default';
+                    setup = setups.get(serverId, playerId, type, id);
+                }
+            }
+
+            // if nothing was found
+            if (setup == null) {
+                if (!config.get().silent || manual)
+                    clrmsg(['No setup configured for', name, `[${typeIdToString(type, id)}]`], [CLR.YELLOW, CLR.TEAL, CLR.PURPLE]);
+                return;
             }
 
             let changed = await changeEmulator.useSetup(setup, setups.current);
 
             if (!config.get().silent || manual) {
-                if (!changed) clrmsg([`Correct setup detected`, `[${zoneName}]`], [CLR.GREEN, CLR.PURPLE]);
-                else clrmsg(['Successfully changed setup', `[${zoneName}]`], [CLR.GREEN, CLR.PURPLE]);
+                if (!changed) clrmsg([`Correct setup detected`, `[${typeIdToString(type, id)}]`], [CLR.GREEN, CLR.PURPLE]);
+                else clrmsg(['Successfully changed setup', `[${typeIdToString(type, id)}]`], [CLR.GREEN, CLR.PURPLE]);
             }
         }).catch(console.error);
     }
 
-    // commands
-    function save(dun) {
-        let { serverId, playerId, name } = mod.game.me;
+    function parseVar(v) {
+        return new Promise ((res, rej) => {
+            // first check if str is speciesId or species name
+            let speciesId = boss.getSpeciesName(v.join(' ')) ? v : boss.getSpeciesId(v.join(' '));
+            if (speciesId != undefined) { res({ type: Setups.TYPE.SPECIES, id: speciesId}); return; }
+            
+            // check if 2 arguments (location boss) = boss
+            if (v.length > 1) {
+                let z = parseShorthand(v[0]);
+                if (z == null) rej(`invalid input ${v.join(' ')}`)
+                let b = Number(v[1]);
+                if (!Number.isInteger(b) || b < 1 || b > 20) {
+                    rej(`invalid boss number: ${b}`);
+                    return;
+                }
+                zones.ensureDungeonNameCached(z)
+                .then(() => boss.ensureHuntingZoneCached(z))
+                .then(() => {
+                    if (boss.getHuntingZone(z) < 0) {
+                        rej(`no huntingzone found for zone ${zones.name(z)} (${v[0]})`)
+                        return;
+                    }
+                    return boss.ensureBossCached(boss.getHuntingZone(z), b * 1000)
+                })
+                .then(() => {
+                    if (boss.getBossName(boss.getHuntingZone(z), b * 1000) == null) rej(`unable to find boss ${b*1000} in dungeon ${zones.name(z)}`);
+                    else res({ type: Setups.TYPE.BOSS, id: setups.bossKey(boss.getHuntingZone(z), b * 1000)});
+                }).catch(rej)
+                return;
+            }
 
-        let z = parseShorthand(dun);
-        if (z === null) return;
+            let z = parseShorthand(v[0]);
+            if (z == null) { rej(`invalid input ${v.join(' ')}`); return; }
 
-        zones.ensureDungeonNameCached(z).then(() => {
-            setups.set(serverId, playerId, z);
-            clrmsg(['Setup saved for', name, `[${zones.name(z)}]`], [CLR.BLUE, CLR.TEAL, CLR.PURPLE]);
-        }).catch(console.error);
+            zones.ensureDungeonNameCached(z)
+            .then(() => {
+                res( { type: z > 9999 ? Setups.TYPE.EVENT : Setups.TYPE.ZONE, id: z});
+            }).catch(rej)
+        })
     }
 
-    function remove(dun) {
+
+    // commands
+    function save(...v) {
         let { serverId, playerId, name } = mod.game.me;
+        parseVar(v)
+        .then(({ type, id}) => {
+            setups.set(serverId, playerId, type, id);
+            clrmsg(['Setup saved for', name, `[${typeIdToString(type, id)}]`], [CLR.BLUE, CLR.TEAL, CLR.PURPLE]);
+        }).catch((err) => {
+            clrmsg(['Unable to save setup:', err], [CLR.BLUE, CLR.RED]);
+        })
+    }
 
-        let z = parseShorthand(dun);
-        if (z === null) return;
-
-        zones.ensureDungeonNameCached(z).then(() => {
-            if (setups.del(serverId, playerId, z))
-                clrmsg(['Setup removed for', name, `[${zones.name(z)}]`], [CLR.BLUE, CLR.TEAL, CLR.PURPLE]);
-            else clrmsg(['No setup found for', name, `[${zones.name(z)}]`], [CLR.BLUE, CLR.TEAL, CLR.PURPLE]);
-        }).catch(console.error);
+    function remove(...v) {
+        let { serverId, playerId, name } = mod.game.me;
+        parseVar(v)
+        .then(({ type, id}) => {
+            setups.del(serverId, playerId, type, id);
+            clrmsg(['Setup saved for', name, `[${typeIdToString(type, id)}]`], [CLR.BLUE, CLR.TEAL, CLR.PURPLE]);
+        }).catch((err) => {
+            clrmsg(['Unable to remove setup:', err], [CLR.BLUE, CLR.RED]);
+        })
     }
 
     function migrate(n) {
@@ -133,17 +209,44 @@ module.exports = function CardSetup(mod) {
         if (list === null) return clrmsg(['No setups found for', chars.name(id)], [CLR.RED, CLR.TEAL]);
 
         clrmsg(['Listing setups for', chars.name(id), ':'], [CLR.BLUE, CLR.TEAL, CLR.BLUE]);
-        zones.ensureDungeonNameCached(Object.keys(list)).then(() => {
-            for (const [k, v] of Object.entries(list)) {
-                clrmsg(['>', `${v.preset+1} - (${v.collectionEffects})`, `[${zones.name(k)}]`], [CLR.BLUE, CLR.YELLOW, CLR.PURPLE]);
-            }
+        zones.ensureDungeonNameCached(Object.keys(list[Setups.TYPE.ZONE]).concat(Object.keys(list[Setups.TYPE.EVENT])))
+        .then(() => {
+            let promises = [];
+            Object.keys(list[Setups.TYPE.BOSS]).forEach((v) => {
+                let b = setups.bossValues(v);
+                promises.push(boss.ensureBossCached(b.huntingZone, b.boss));
+            })
+            return Promise.all(promises);
+        })
+        .then(() => {
+            Object.keys(Setups.TYPE).forEach((t) => {
+                clrmsg([Setups.TYPE[t]], [CLR.GREEN])
+                for (const [k, v] of Object.entries(list[Setups.TYPE[t]])) {
+                    clrmsg(['>', `${v.preset+1} - (${v.collectionEffects})`, `[${typeIdToString(Setups.TYPE[t], k)}]`], [CLR.BLUE, CLR.YELLOW, CLR.PURPLE]);
+                }
+            })
         }).catch(console.error);
     };
 
-    function use(dun) {
-        let z = parseShorthand(dun);
-        if (z === null) return;
-        changeSetup(z, true);
+    function typeIdToString(type, id) {
+        if (type == Setups.TYPE.BOSS) {
+            const d = setups.bossValues(id);
+            return boss.getBossName(d.huntingZone, d.boss);
+        }
+        if (type == Setups.TYPE.SPECIES) {
+            return boss.getSpeciesName(id);
+        }
+        return zones.name(id);
+    }
+
+    function use(...v) {
+        parseVar(v)
+        .then(({ type, id}) => {
+            changeSetup(type, id, true);
+        })
+        .catch((err) => {
+            clrmsg(['Unable to use setup: ', err], [CLR.BLUE, CLR.RED]);
+        })
     }
 
     function show(n, index) {
@@ -181,7 +284,7 @@ module.exports = function CardSetup(mod) {
         else if (dun.toLowerCase() === 'default') z = 'default';
         else z = zones.shToId(dun);
 
-        if (z === null) clrmsg(['Invalid dungeon shorthand', dun], [CLR.RED, CLR.PURPLE]);
+        // if (z === null) clrmsg(['Invalid dungeon shorthand', dun], [CLR.RED, CLR.PURPLE]);
         return z;
     }
 
@@ -198,24 +301,5 @@ module.exports = function CardSetup(mod) {
     // out
     function clrmsg(...args) {
         mod.command.message(colors(...args));
-    }
-
-
-    // old save file
-    function old() {
-        const old_file_name = 'setupData.json';
-        if (fs.existsSync(path.join(__dirname, old_file_name))) {
-            let data = require(`./${old_file_name}`);
-            if (data.servers == null) return;
-            for (const [serverId, server] of Object.entries(data.servers)) {
-                for (const [playerId, char] of Object.entries(server)) {
-                    if (char.setups == null) return;
-                    for (const [zone, setup] of Object.entries(char.setups)) {
-                        setups.setSetup(serverId, playerId, zone, setup);
-                    }
-                }
-            }
-            clrmsg(['Imported old setup data'], [CLR.GREEN]);
-        } else clrmsg(['Failed to import old setup data: file not found'], [CLR.RED]);
     }
 }

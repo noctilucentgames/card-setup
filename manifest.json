@@ -1,7 +1,7 @@
 {
   "files": {
-    "index.js": "4568c2c5e14d4c5d80663c4283e189f8d07ac90e222fa7428213aed5611c6106",
-    "module.json": "612e95ed9dfcefc2c6d16f94b0d861ed212658d52ebb69af3d6e47a003b4c08e",
+    "index.js": "86edcac358e87f10ed267505927f71084d216837cb3d8c7587504e202b97a6ed",
+    "module.json": "eb6c58d5f44e619cc6703a691aaee99935f7b22ad608812ebdb9281c0fb0b624",
     "README.md": "c19c29908dc8133abe9e394dccace009e29e34279b22eebe5b4c8aef74618317",
     "data/DungeonLib.json": "0a8c7e6084a4ec4c5dafe9fb06868bedd65d456d9723de20eaec85bcb7b6a290",
     "data/opcodes.json": "5ca596868ac2e4a28c00032c34aff77b9caee90de91f6153a39d20644801ec37",
@@ -11,17 +11,18 @@
     "data/defs/S_ADD_CARD_COLLECTION_EFFECT.1.def": "7cdaa3e7244ec7091712c0547a5d75b07726513600e0b64db34b6b5582769260",
     "data/defs/S_ADD_CARD_TO_PRESET.1.def": "653fa7a821e342967d82108dab316dce7b98f5c2fa104f396ee0f0caa3df1ef6",
     "data/defs/S_CARD_COLLECTION_EFFECTS.1.def": "a4009f3926efe1598466a08ba001b2ab3f6464ff70c863a33660283314699871",
-    "data/defs/S_CARD_DATA.1.def": "1ba20ab5a830bd6f99754a93ea25f01bdd064993c60bcfbee1330c48817771d4",
+    "data/defs/S_CARD_DATA.2.def": "bc8e46eb9bd8c1d6bf8ca7120b94209f63722df9fd9aac32c0a9e57d846c4865",
     "data/defs/S_CARD_PRESET.1.def": "9f6bae95fd08b14e61f5fccbd3ab9fe001f093376f00cbf7550d43c3f66c2465",
     "data/defs/S_REMOVE_CARD_COLLECTION_EFFECT.1.def": "7cdaa3e7244ec7091712c0547a5d75b07726513600e0b64db34b6b5582769260",
     "data/defs/S_REMOVE_CARD_FROM_PRESET.1.def": "653fa7a821e342967d82108dab316dce7b98f5c2fa104f396ee0f0caa3df1ef6",
-    "lib/CardPresets.js": "c5b47dbe444df1c15ac8f8905a5011ff925d6651bdbb95b39e4cc0e4f6c1e6a2",
+    "lib/CardPresets.js": "451aed54789f22460a7d0d1a5bf3f12baafe667c17039538898303dbb01d6218",
     "lib/ChangeEmulator.js": "1507989a06338bef014b7889647b0e5cb81cf355e8e2494831dd7d2f21ee6cf5",
     "lib/Chars.js": "6854ec4ab1b25284f4de7b664c2d75bf6d968b5e2af179a01c807d5c944a68d0",
     "lib/Config.js": "9acf1307c36ef4ec1cb9fe70e09913f67361c39be54e2f687e352b70d115cc83",
     "lib/enums.js": "caa8f7a492974a35aa45a868a1647745e4c110bac23a1fb882430c433623dee7",
-    "lib/Setups.js": "fe7cc37574965fb1290307865bcd62ec9ae35250f6beed2ec827034dbf47a2df",
+    "lib/Setups.js": "6fe26985509cd3cb34ea2a8c4807cd452d93132fd4cffa7f3b6a386aa0b6ecb1",
     "lib/utils.js": "eb5cca5a0317397a8d8a507d4fd875ef286ecca111428c30fe47188ec332a42f",
-    "lib/Zones.js": "9cd3edaa7632691742c48f9071b259779689d2502ee644d9e1356aca6e4bfdda"
+    "lib/Zones.js": "9cd3edaa7632691742c48f9071b259779689d2502ee644d9e1356aca6e4bfdda",
+    "lib/Boss.js": "d6c8b0a5bd8d5cc03d246084898373a7b09e4d22f62a3b22ec63a1f153b07d6a"
   }
 }

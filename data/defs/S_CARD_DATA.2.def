@@ -1,4 +1,5 @@
 uint64 gameId
+uint32 unk # 38, possibly empty array after currentPreset
 uint32 presetCount
 uint32 currentPreset
 uint32 collectionLevel
